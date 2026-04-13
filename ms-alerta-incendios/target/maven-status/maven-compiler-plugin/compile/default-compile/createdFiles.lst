@@ -1,0 +1,8 @@
+com\MunicipalidadDelValle\ms_alerta_incendios\controller\ReporteController.class
+com\MunicipalidadDelValle\ms_alerta_incendios\service\ReporteService.class
+com\MunicipalidadDelValle\ms_alerta_incendios\Excepcion\ExcepcionGlobal.class
+com\MunicipalidadDelValle\ms_alerta_incendios\model\EvidenciaMultimedia.class
+com\MunicipalidadDelValle\ms_alerta_incendios\MsAlertaIncendiosApplication.class
+com\MunicipalidadDelValle\ms_alerta_incendios\repository\ReporteRepository.class
+com\MunicipalidadDelValle\ms_alerta_incendios\Excepcion\ReporteInvalidoExcepcion.class
+com\MunicipalidadDelValle\ms_alerta_incendios\model\ReporteModel.class
