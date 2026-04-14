@@ -1,0 +1,12 @@
+services:
+  ms-alerta-incendios:
+    build: ./ms-alerta-incendios
+    container_name: ms-alerta-incendios-container
+    ports:
+      - "8081:8081"
+    volumes:
+      # Montamos tu carpeta de la Wallet en la ruta /app/wallet del contenedor
+      - ./Wallet_FXVGR0RD9MQXJ20W:/app/wallet
+    environment:
+      # Esta variable le dirá a tu application.yml dónde buscar las llaves
+      - TNS_ADMIN_DIR=/app/wallet

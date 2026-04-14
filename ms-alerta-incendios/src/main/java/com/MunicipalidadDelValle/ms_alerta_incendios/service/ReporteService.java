@@ -27,7 +27,7 @@ public class ReporteService {
             throw new ReporteInvalidoExcepcion("Las coordenadas (latitud y longitud) son obligatorias para el mapa.");
         }
 
-        
+        //sdasd
         if (reporte.getLatitud() < -90 || reporte.getLatitud() > 90 || 
             reporte.getLongitud() < -180 || reporte.getLongitud() > 180) {
             throw new ReporteInvalidoExcepcion("Las coordenadas geográficas ingresadas no son válidas.");
