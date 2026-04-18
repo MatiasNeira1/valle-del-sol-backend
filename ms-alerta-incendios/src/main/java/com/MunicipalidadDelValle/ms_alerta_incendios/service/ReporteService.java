@@ -1,6 +1,9 @@
 package com.MunicipalidadDelValle.ms_alerta_incendios.service;
+
 import org.springframework.stereotype.Service;
 import com.MunicipalidadDelValle.ms_alerta_incendios.model.ReporteModel;
+// 👇 ¡IMPORTANTE! Agregamos la importación de la Evidencia aquí:
+import com.MunicipalidadDelValle.ms_alerta_incendios.model.EvidenciaMultimedia; 
 import com.MunicipalidadDelValle.ms_alerta_incendios.repository.ReporteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
@@ -15,7 +18,7 @@ public class ReporteService {
     @Transactional
     public ReporteModel crearNuevoReporte(ReporteModel reporte) {
         
-        // 1. Validaciones de Negocio
+        
         if (reporte.getTitulo() == null || reporte.getTitulo().trim().isEmpty()) {
             throw new ReporteInvalidoExcepcion("El reporte debe tener un título descriptivo.");
         }
@@ -24,19 +27,25 @@ public class ReporteService {
             throw new ReporteInvalidoExcepcion("Las coordenadas (latitud y longitud) son obligatorias para el mapa.");
         }
 
-        // Validar que las coordenadas tengan sentido geográfico
+        //sdasd
         if (reporte.getLatitud() < -90 || reporte.getLatitud() > 90 || 
             reporte.getLongitud() < -180 || reporte.getLongitud() > 180) {
             throw new ReporteInvalidoExcepcion("Las coordenadas geográficas ingresadas no son válidas.");
         }
 
+        
+        // Le decimos a cada evidencia (hijo) quién es su reporte (padre)
+        if (reporte.getEvidencias() != null) {
+            for (EvidenciaMultimedia evidencia : reporte.getEvidencias()) {
+                evidencia.setReporte(reporte); 
+            }
+        }
+      
+
         // 2. Guardar en la base de datis 
         ReporteModel reporteGuardado = reporteRepository.save(reporte);
 
-        // 3. TODO: Comunicación con ms-monitoreo-geo
-        // Aquí es donde, en el futuro, usaremos un RestTemplate o FeignClient 
-        // para avisarle al mapa que debe pintar el pin con reporteGuardado.getId()
-
+        
         return reporteGuardado;
-}
+    }
 }
