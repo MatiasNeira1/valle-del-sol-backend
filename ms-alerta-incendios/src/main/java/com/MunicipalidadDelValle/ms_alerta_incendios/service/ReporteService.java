@@ -48,4 +48,8 @@ public class ReporteService {
         
         return reporteGuardado;
     }
+
+    public List<ReporteModel> obtenerTodos() {
+    return reporteRepository.findAll(); 
+}
 }

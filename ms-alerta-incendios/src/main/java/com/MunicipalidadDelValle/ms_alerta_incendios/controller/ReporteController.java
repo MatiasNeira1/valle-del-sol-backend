@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.MunicipalidadDelValle.ms_alerta_incendios.model.ReporteModel;
 import com.MunicipalidadDelValle.ms_alerta_incendios.service.ReporteService;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reportes")
@@ -24,4 +24,10 @@ public class ReporteController {
         ReporteModel reporteCreado = reporteService.crearNuevoReporte(nuevoReporte);
         return new ResponseEntity<>(reporteCreado, HttpStatus.CREATED);
 }
+
+    @GetMapping
+    public ResponseEntity<List<ReporteModel>> obtenerTodosLosReportes() {
+        List<ReporteModel> reportes = reporteService.obtenerTodos();
+        return new ResponseEntity<>(reportes, HttpStatus.OK);
+    }
 }
