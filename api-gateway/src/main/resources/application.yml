@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      # Permisos para que React (Vite) pueda entrar
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: 
+              - "http://localhost:5173" # <-- Cambia esto si tu front corre en otro puerto
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      
+      routes:
+        - id: alerta-route
+          uri: http://ms-alerta-incendios-container:8081
+          predicates:
+            - Path=/api/reportes/**
+
+        - id: monitoreo-route
+          uri: http://ms-monitoreo-geo-container:8082
+          predicates:
+            - Path=/api/mapa/**

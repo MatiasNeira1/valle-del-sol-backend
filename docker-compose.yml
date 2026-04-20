@@ -22,3 +22,12 @@ services:
       - ./Wallet_ms-alerta-incendio:/app/wallet  
     environment:
       - TNS_ADMIN_DIR=/app/wallet
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway-container
+    ports:
+      - "8080:8080" # [Puerto de tu PC]:[Puerto del Contenedor]
+    depends_on:
+      - ms-alerta-incendios
+      - ms-monitoreo-geo
