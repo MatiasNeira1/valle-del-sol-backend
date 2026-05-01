@@ -1,0 +1,7 @@
+com\MunicipalidadDelValle\ms_monitoreo_geo\model\ReporteGeoModel.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\cliente\AlertaCliente.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\service\MapaService.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\controller\MapaController.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\repository\MapaRepository.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\MsMonitoreoGeoApplication.class
+com\MunicipalidadDelValle\ms_monitoreo_geo\dto\ReporteDTO.class
