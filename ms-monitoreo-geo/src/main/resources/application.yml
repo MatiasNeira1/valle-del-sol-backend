@@ -5,25 +5,23 @@ spring:
   application:
     name: ms-monitoreo
   datasource:
-    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high?TNS_ADMIN=${TNS_ADMIN_DIR}
+    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high?TNS_ADMIN=C:/Fullstack/Wallet_FXVGR0RD9MQXJ20W
     username: ADMIN
     password: Matiasneira123.
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
-    show-sql: true #esto hay que sacarlo dsp
+    show-sql: true
     hibernate:
       ddl-auto: update
 
-# 🚀 URL de tu otro microservicio en Docker
 alerta:
-  url: http://ms-alerta-incendios-container:8081
+  url: http://localhost:8081
 
-# 🛡️ Configuración del Circuit Breaker
 resilience4j:
   circuitbreaker:
     instances:
       alertaCB:
-        slidingWindowSize: 5 # Analiza las últimas 5 peticiones
-        failureRateThreshold: 50 # Si el 50% falla, el circuito se ABRE
-        waitDurationInOpenState: 10s # Espera 10 seg antes de intentar de nuevo
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 3
