@@ -32,7 +32,7 @@ Bash
 4. Ejecución de Microservicios
 Puedes levantar un servicio específico utilizando el comando de Maven:
 Bash
-./mvnw.cmd spring-boot:run -pl ms-alerta-incendios
+./mvnw.cmd spring-boot:run -pl (NOMBRE_MICROSERVICIO)
 
 5. Orquestación con Docker (Opcional)
 Si deseas levantar todo el ecosistema de microservicios:
