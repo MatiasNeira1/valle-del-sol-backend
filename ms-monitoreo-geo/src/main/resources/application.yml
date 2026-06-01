@@ -5,7 +5,7 @@ spring:
   application:
     name: ms-monitoreo
   datasource:
-    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high?TNS_ADMIN=${TNS_ADMIN_DIR}
+    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high
     username: ADMIN
     password: Matiasneira123.
     driver-class-name: oracle.jdbc.OracleDriver
@@ -14,9 +14,9 @@ spring:
     hibernate:
       ddl-auto: update
 
-# 🚀 URL de tu otro microservicio en Docker
+# 🚀 URL de tu otro microservicio
 alerta:
-  url: http://ms-alerta-incendios-container:8081
+  url: ${MS_ALERTA_URL:http://localhost:8081}
 
 # 🛡️ Configuración del Circuit Breaker
 resilience4j:

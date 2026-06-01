@@ -4,14 +4,12 @@ services:
     container_name: ms-alerta-incendios-container
     ports:
       - "8081:8081"
-      
     volumes:
       # Montamos tu carpeta de la Wallet en la ruta /app/wallet del contenedor
       - ./Wallet_ms-alerta-incendio:/app/wallet
     environment:
       # Esta variable le dirá a tu application.yml dónde buscar las llaves
       - TNS_ADMIN_DIR=/app/wallet
-
 
   ms-monitoreo-geo:
     build: ./ms-monitoreo-geo
@@ -22,12 +20,28 @@ services:
       - ./Wallet_ms-alerta-incendio:/app/wallet  
     environment:
       - TNS_ADMIN_DIR=/app/wallet
+      - MS_ALERTA_URL=http://ms-alerta-incendios-container:8081
+
+  ms-notificaciones:
+    build: ./ms-notificaciones
+    container_name: ms-notificaciones-container
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./Wallet_ms-alerta-incendio:/app/wallet
+    environment:
+      - TNS_ADMIN_DIR=/app/wallet
 
   api-gateway:
     build: ./api-gateway
     container_name: api-gateway-container
     ports:
       - "8080:8080" # [Puerto de tu PC]:[Puerto del Contenedor]
+    environment:
+      - MS_ALERTA_URL=http://ms-alerta-incendios-container:8081
+      - MS_MONITOREO_URL=http://ms-monitoreo-geo-container:8082
+      - MS_NOTIFICACIONES_URL=http://ms-notificaciones-container:8083
     depends_on:
       - ms-alerta-incendios
       - ms-monitoreo-geo
+      - ms-notificaciones

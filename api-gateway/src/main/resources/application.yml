@@ -17,11 +17,16 @@ spring:
       
       routes:
         - id: alerta-route
-          uri: http://ms-alerta-incendios-container:8081
+          uri: ${MS_ALERTA_URL:http://localhost:8081}
           predicates:
             - Path=/api/reportes/**
 
         - id: monitoreo-route
-          uri: http://ms-monitoreo-geo-container:8082
+          uri: ${MS_MONITOREO_URL:http://localhost:8082}
           predicates:
             - Path=/api/mapa/**
+
+        - id: notificaciones-route
+          uri: ${MS_NOTIFICACIONES_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/notificaciones/**

@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     # La URL cambia. Ponemos el nombre de la conexión y le indicamos dónde está el Wallet
-    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high?TNS_ADMIN=${TNS_ADMIN_DIR}
+    url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high
     username: ADMIN 
     password: Matiasneira123.
     driver-class-name: oracle.jdbc.OracleDriver
