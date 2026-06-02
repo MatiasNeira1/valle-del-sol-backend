@@ -3,7 +3,6 @@ package com.MunicipalidadDelValle.ms_alerta_incendios;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 import java.io.File;
 
 //Con el exclude se desactiva la seguridad para que no pida autenticación al acceder a los endpoints, esto es solo para desarrollo, en producción se debería configurar correctamente la seguridad

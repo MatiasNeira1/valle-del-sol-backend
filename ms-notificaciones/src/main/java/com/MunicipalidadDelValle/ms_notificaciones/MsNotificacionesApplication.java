@@ -25,5 +25,4 @@ public class MsNotificacionesApplication {
 
 		SpringApplication.run(MsNotificacionesApplication.class, args);
 	}
-
 }
