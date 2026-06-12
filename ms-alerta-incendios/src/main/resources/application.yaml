@@ -16,4 +16,3 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.OracleDialect
-        dialect: org.hibernate.dialect.OracleDialect
