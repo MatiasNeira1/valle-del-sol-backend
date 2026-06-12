@@ -14,8 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.MunicipalidadDelValle.ms_alerta_incendios.model.ReporteModel;
 import com.MunicipalidadDelValle.ms_alerta_incendios.service.ReporteService;
-import java.util.List;
+import jakarta.servlet.http.HttpServletRequest;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/reportes")
 public class ReporteController {
@@ -23,10 +32,57 @@ public class ReporteController {
     @Autowired
     private ReporteService reporteService;
 
+    // Mapa para llevar el registro de peticiones por IP (Rate Limiting en memoria)
+    // Almacena la IP como llave y una lista de fechas (timestamps) de sus reportes
+    private final Map<String, List<LocalDateTime>> requestCountsPerIp = new ConcurrentHashMap<>();
+    private static final int MAX_REQUESTS_PER_DAY = 3;
+
     @PostMapping("/crear")
-    public ResponseEntity<ReporteModel> crearReporte(@RequestBody ReporteModel nuevoReporte) {
+    public ResponseEntity<?> crearReporte(@RequestBody ReporteModel nuevoReporte, HttpServletRequest request) {
+        // 1. Obtener la IP del cliente
+        String clientIp = obtenerIpCliente(request);
+
+        // 2. Aplicar limitación de tasa (Rate Limiting)
+        if (!puedeCrearReporte(clientIp)) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body("Has superado el límite de " + MAX_REQUESTS_PER_DAY + " reportes por día. Intenta de nuevo mañana.");
+        }
+
+        // 3. Crear el reporte si pasó la validación
         ReporteModel reporteCreado = reporteService.crearNuevoReporte(nuevoReporte);
         return new ResponseEntity<>(reporteCreado, HttpStatus.CREATED);
+    }
+
+    // ── Métodos auxiliares para Rate Limiting ────────────────────────────────────
+
+    private boolean puedeCrearReporte(String ip) {
+        LocalDateTime ahora = LocalDateTime.now();
+        LocalDateTime hace24Horas = ahora.minusHours(24);
+
+        // Obtenemos o inicializamos la lista de peticiones para esta IP
+        List<LocalDateTime> peticiones = requestCountsPerIp.computeIfAbsent(ip, k -> new ArrayList<>());
+
+        synchronized (peticiones) {
+            // Limpiar peticiones antiguas (mayores a 24 horas) para no saturar la memoria
+            peticiones.removeIf(tiempo -> tiempo.isBefore(hace24Horas));
+
+            // Comprobar si ya alcanzó el límite
+            if (peticiones.size() >= MAX_REQUESTS_PER_DAY) {
+                return false; // Límite superado
+            }
+
+            // Registrar la nueva petición
+            peticiones.add(ahora);
+            return true;
+        }
+    }
+
+    private String obtenerIpCliente(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.getRemoteAddr())) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 
     @GetMapping

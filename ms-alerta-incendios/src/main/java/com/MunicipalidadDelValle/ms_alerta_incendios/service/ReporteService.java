@@ -50,6 +50,37 @@ public class ReporteService {
     }
 
     public List<ReporteModel> obtenerTodos() {
-    return reporteRepository.findAll(); 
-}
-}
+        return reporteRepository.findAll(); 
+    }
+
+    @Transactional
+    public ReporteModel actualizarReporte(Long id, ReporteModel reporteDetalles) {
+        ReporteModel reporte = reporteRepository.findById(id)
+            .orElseThrow(() -> new ReporteInvalidoExcepcion("Reporte no encontrado con ID: " + id));
+        
+        if (reporteDetalles.getTitulo() != null && !reporteDetalles.getTitulo().trim().isEmpty()) {
+            reporte.setTitulo(reporteDetalles.getTitulo());
+        }
+        if (reporteDetalles.getDescripcion() != null && !reporteDetalles.getDescripcion().trim().isEmpty()) {
+            reporte.setDescripcion(reporteDetalles.getDescripcion());
+        }
+        if (reporteDetalles.getEstado() != null) {
+            reporte.setEstado(reporteDetalles.getEstado());
+        }
+        if (reporteDetalles.getLatitud() != null) {
+            reporte.setLatitud(reporteDetalles.getLatitud());
+        }
+        if (reporteDetalles.getLongitud() != null) {
+            reporte.setLongitud(reporteDetalles.getLongitud());
+        }
+        
+        return reporteRepository.save(reporte);
+    }
+
+    @Transactional
+    public void eliminarReporte(Long id) {
+        ReporteModel reporte = reporteRepository.findById(id)
+            .orElseThrow(() -> new ReporteInvalidoExcepcion("Reporte no encontrado con ID: " + id));
+        reporteRepository.delete(reporte);
+    }
+}
