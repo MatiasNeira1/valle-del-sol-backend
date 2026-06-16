@@ -35,7 +35,7 @@ public class ReporteController {
     // Mapa para llevar el registro de peticiones por IP (Rate Limiting en memoria)
     // Almacena la IP como llave y una lista de fechas (timestamps) de sus reportes
     private final Map<String, List<LocalDateTime>> requestCountsPerIp = new ConcurrentHashMap<>();
-    private static final int MAX_REQUESTS_PER_DAY = 3;
+    private static final int MAX_REQUESTS_PER_DAY = 999999; // Aumentado temporalmente para pruebas de desarrollo
 
     @PostMapping("/crear")
     public ResponseEntity<?> crearReporte(@RequestBody ReporteModel nuevoReporte, HttpServletRequest request) {
