@@ -35,7 +35,7 @@ public class ReporteController {
     // Mapa para llevar el registro de peticiones por IP (Rate Limiting en memoria)
     // Almacena la IP como llave y una lista de fechas (timestamps) de sus reportes
     private final Map<String, List<LocalDateTime>> requestCountsPerIp = new ConcurrentHashMap<>();
-    private static final int MAX_REQUESTS_PER_DAY = 999999; // Aumentado temporalmente para pruebas de desarrollo
+    private static final int MAX_REQUESTS_LIMIT = 5;
 
     @PostMapping("/crear")
     public ResponseEntity<?> crearReporte(@RequestBody ReporteModel nuevoReporte, HttpServletRequest request) {
@@ -45,7 +45,7 @@ public class ReporteController {
         // 2. Aplicar limitación de tasa (Rate Limiting)
         if (!puedeCrearReporte(clientIp)) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("Has superado el límite de " + MAX_REQUESTS_PER_DAY + " reportes por día. Intenta de nuevo mañana.");
+                    .body("Has superado el límite de " + MAX_REQUESTS_LIMIT + " reportes cada 10 horas. Intenta de nuevo más tarde.");
         }
 
         // 3. Crear el reporte si pasó la validación
@@ -57,17 +57,17 @@ public class ReporteController {
 
     private boolean puedeCrearReporte(String ip) {
         LocalDateTime ahora = LocalDateTime.now();
-        LocalDateTime hace24Horas = ahora.minusHours(24);
+        LocalDateTime hace10Horas = ahora.minusHours(10);
 
         // Obtenemos o inicializamos la lista de peticiones para esta IP
         List<LocalDateTime> peticiones = requestCountsPerIp.computeIfAbsent(ip, k -> new ArrayList<>());
 
         synchronized (peticiones) {
-            // Limpiar peticiones antiguas (mayores a 24 horas) para no saturar la memoria
-            peticiones.removeIf(tiempo -> tiempo.isBefore(hace24Horas));
+            // Limpiar peticiones antiguas (mayores a 10 horas) para no saturar la memoria
+            peticiones.removeIf(tiempo -> tiempo.isBefore(hace10Horas));
 
             // Comprobar si ya alcanzó el límite
-            if (peticiones.size() >= MAX_REQUESTS_PER_DAY) {
+            if (peticiones.size() >= MAX_REQUESTS_LIMIT) {
                 return false; // Límite superado
             }
 
