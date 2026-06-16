@@ -6,7 +6,7 @@ spring:
     # La URL cambia. Ponemos el nombre de la conexión y le indicamos dónde está el Wallet
     url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high
     username: ADMIN 
-    password: Matiasneira123.
+    password: Bmcrojas2209@
     driver-class-name: oracle.jdbc.OracleDriver
   
   jpa:

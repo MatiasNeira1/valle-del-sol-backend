@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high
     username: ADMIN
-    password: Matiasneira123.
+    password: Bmcrojas2209@
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     show-sql: true #esto hay que sacarlo dsp
