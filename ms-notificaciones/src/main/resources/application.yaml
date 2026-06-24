@@ -8,7 +8,7 @@ spring:
     # Usamos la ruta exacta que se ve en tu carpeta C:\Fullstack
     url: jdbc:oracle:thin:@fxvgr0rd9mqxj20w_high
     username: ADMIN
-    password: Bmcrojas2209@
+    password: Bmcrojas2209
     driver-class-name: oracle.jdbc.OracleDriver
   
   jpa:
